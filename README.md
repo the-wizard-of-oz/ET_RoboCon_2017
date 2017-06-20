@@ -7,3 +7,4 @@ We are private team who loves robotics and programming.
 Member list(GitHub account name)
 
 1. the-wizard-of-oz
+2. kuromido
