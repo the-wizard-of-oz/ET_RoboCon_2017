@@ -1,0 +1,38 @@
+・bluetooth接続
+下記名前を見つけてペアリング。PINはPASS_KEYの通り。
+
+↓デフォルト↓
+DEVICE_NAME : mindstorms_ev3
+PASS_KEY    : 0000
+※defineすることで変更可能
+
+
+・bluetoothでファイル転送
+↓dv3側
+ev3起動をしてLOAD_APPを指定。bluetooth PANを指定。
+↓PC側
+bluetoothアイコンからパーソナルエリアネットワークへの参加を選択。
+デバイスの追加→PINを追加(PIN : 0000)
+接続方法→アクセスポイントを選択
+
+ターミナルから
+pingでネットワークがつながっていることを確認する。
+> ping 10.0.10.1
+※デフォルトは10.0.10.1
+make↓ファイル下記コマンドでアップロード
+> make upload 10.0.10.1 from=app to=app (appは任意の名前に変更可能)
+
+※crulがないと怒られた場合下記参照
+http://win.just4fun.biz/?開発ツール/CygwinにcURLコマンドをインストールする手順
+
+ファイルが転送されたことを確認したら、
+パーソナルエリアネットワークから"デバイスネットワークからの切断"を実施
+(これでbluetooth設定がPANからSPPに戻る)
+
+teratermを起動
+bluetoothの設定で指定されたCOMポートを指定して接続
+
+・bluetooth経由でターミナルに出力
+ソースにfprintfを追加
+ex)
+> fprintf(bt, "Hallo EV3!! motor_R : %d motor_L : %d \n\r", pwm_R , pwm_L);
