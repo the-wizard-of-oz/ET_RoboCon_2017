@@ -14,7 +14,8 @@ namespace unit
 
 	bool SelfPositionChecker::reachedGoal()
 	{
-		return false;
+		// 現状ではeBlackかeWhiteしか返ってこないため、ゴールしたと判定されることはない。
+		return (mColorJudge->judgeLineColor() == unit::eGlay);
 	}
 
 	bool SelfPositionChecker::isOnBlackLine()

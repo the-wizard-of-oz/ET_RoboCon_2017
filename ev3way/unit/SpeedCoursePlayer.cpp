@@ -16,6 +16,11 @@ namespace unit
 
 	bool SpeedCoursePlayer::doPreparation()
 	{
+		bool isFinish = false;
+		while(!isFinish)
+		{
+			isFinish = mTailController->shiftToRunningPosture();
+		}
 		intializeBalancingRunner();
 		playCourse();
 		return true;
@@ -33,20 +38,12 @@ namespace unit
 
 	void SpeedCoursePlayer::playCourse()
 	{
-		bool isFinish = false;
-		while(!isFinish)
-		{
-			if(!mTailController->isRunningPosture())
-			{
-				mTailController->shiftToRunningPosture();
-			}
-			run();
-		}
+		run();
 	}
 
 	bool SpeedCoursePlayer::run()
 	{
-		if(!(mSelfPositionChecker->reachedGoal()))
+		while(!(mSelfPositionChecker->reachedGoal()))
 		{
 			int direction;
 			calculateRunningDirection(direction);
