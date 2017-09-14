@@ -2,7 +2,8 @@ mkfile_path := $(dir $(lastword $(MAKEFILE_LIST)))
 
 APPL_COBJS += balancer.o balancer_param.o
 
-APPL_CXXOBJS += MotorDriver.o GyroDriver.o ColorSensorDriver.o TouchSensorDriver.o Battery.o BatteryDriver.o LCD.o \
+APPL_CXXOBJS += BluetoothLogger.o \
+				MotorDriver.o GyroDriver.o ColorSensorDriver.o TouchSensorDriver.o Battery.o BatteryDriver.o LCD.o \
 				BalancingController.o TailController.o TouchSensorMonitor.o MotorController.o \
 				IAnalogMeter.o DistanceMeter.o Measurement.o \
 				EndJudge.o BrightnessJudge.o DistanceJudge.o EndMonitor.o \

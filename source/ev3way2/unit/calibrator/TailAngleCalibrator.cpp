@@ -5,8 +5,8 @@
 
 namespace unit
 {
-	static const int CALIBRATION_RANGE = 20;
-	static const int FALL_DETECT_ANGLE = 20;
+	static const int CALIBRATION_RANGE = 10;
+	static const int FALL_DETECT_ANGLE = 30;
 	
 	TailAngleCalibrator::TailAngleCalibrator(TouchSensorMonitor* touchSensorMonitor, LCD* lcd,
 											 TailAngle*      tailAngle,
@@ -43,7 +43,7 @@ namespace unit
 									 tailControl::eLowSpeed,
 									 tailControl::eEqualToTargetAngle);
 			ev3_led_set_color(LED_RED);
-			tslp_tsk(2000);
+			tslp_tsk(1000);
 			ev3_led_set_color(LED_OFF);
 			gyroAngle -= mGyroDriver->GetAngle();
 			if(abs(gyroAngle) > FALL_DETECT_ANGLE)

@@ -1,6 +1,8 @@
 #include "ev3api.h"
 #include "app.h"
 
+#include "BluetoothLogger.h"
+
 #include "hardware_setting.h"
 #include "MotorDriver.h"
 #include "GyroDriver.h"
@@ -50,10 +52,9 @@
 
 #include "EV3Way.h"
 
-//	Bluetooth
-static FILE* bluetoothHandle = NULL;
-
 //	------------------------------------------------------------
+static unit::BluetoothLogger* gBluetoothLogger = nullptr;
+
 unit::MotorDriver* gTailMotorDriver  = nullptr;
 unit::MotorDriver* gRightMotorDriver = nullptr;
 unit::MotorDriver* gLeftMotorDriver  = nullptr;
@@ -91,6 +92,8 @@ app::EV3Way* gEV3Way = nullptr;
 //	------------------------------------------------------------
 static void user_system_create()
 {
+	gBluetoothLogger   = new unit::BluetoothLogger();
+	
 	gTailMotorDriver   = new unit::MotorDriver(PORT_TAIL_MOTOR);
 	gRightMotorDriver  = new unit::MotorDriver(PORT_RIGHT_MOTOR);
 	gLeftMotorDriver   = new unit::MotorDriver(PORT_LEFT_MOTOR);
@@ -113,7 +116,7 @@ static void user_system_create()
 
 	gPostureController = new unit::PostureController(gTailController, &gTailAngle);
 	
-	gStartMonitor = new unit::StartMonitor(gTouchSensorMonitor);
+	gStartMonitor = new unit::StartMonitor(gTouchSensorDriver);
 	
 	gInitialize   = new unit::Initialize(gPostureController);
 	gCalibration  = new unit::Calibration();
@@ -172,6 +175,8 @@ static void user_system_create()
 
 static void user_system_destroy()
 {
+	delete gBluetoothLogger;
+	
 	delete gTailMotorDriver;
 	delete gRightMotorDriver;
 	delete gLeftMotorDriver;
@@ -208,22 +213,42 @@ void ev3_cyc_tracer(intptr_t exinf)
 	act_tsk(TRACER_TASK);
 }
 
+//	------------------------------------------------------------
 void tracer_task(intptr_t exinf)
 {
 	gEV3Way->execute();
-	ext_tsk();
+//	ext_tsk();
+}
+
+//	------------------------------------------------------------
+void ev3_cyc_bluetooth_start(intptr_t exinf)
+{
+	act_tsk(BLUETOOTH_START_TASK);
+}
+
+//	------------------------------------------------------------
+void bluetooth_start_task(intptr_t unused)
+{
+	if(!gStartMonitor->isStartSignalReceived())
+	{
+		if(!gStartMonitor->isBluetoothStartSignalReceived())
+		{
+			gStartMonitor->updateBluetoothStartSignalStatus();
+		}
+	}
+//	ext_tsk();
 }
 
 //	------------------------------------------------------------
 void main_task(intptr_t unused)
 {
-	bluetoothHandle = ev3_serial_open_file(EV3_SERIAL_BT);
-	assert(bluetoothHandle != NULL);
-
 	user_system_create();
 	ev3_sta_cyc(EV3_CYC_TRACER);
+	ev3_sta_cyc(EV3_CYC_BLUETOOTH_START);
 	slp_tsk();
+	ter_tsk(BLUETOOTH_START_TASK);
 	ev3_stp_cyc(EV3_CYC_TRACER);
+	ev3_stp_cyc(EV3_CYC_BLUETOOTH_START);
 	user_system_destroy();
 	ext_tsk();
 }
