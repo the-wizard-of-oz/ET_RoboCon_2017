@@ -15,9 +15,10 @@ extern "C" {
 	/*
 	 *  各タスクの優先度の定義
 	 */
-#define MAIN_PRIORITY    TMIN_APP_TPRI + 1  /* メインタスクの優先度 */
-#define TRACER_PRIORITY  TMIN_APP_TPRI + 2
-	
+#define MAIN_PRIORITY      TMIN_APP_TPRI + 1  /* メインタスクの優先度 */
+#define TRACER_PRIORITY    TMIN_APP_TPRI + 2  /* 周期タスクの優先度 */
+#define BLUETOOTH_PRIORITY TMIN_APP_TPRI + 3  /* BLUETOOTH通信の優先度 */
+
 	/*
 	 *  ターゲットに依存する可能性のある定数の定義
 	 */
@@ -31,8 +32,12 @@ extern "C" {
 #ifndef TOPPERS_MACRO_ONLY
 	
 	extern void main_task(intptr_t exinf);
+
 	extern void tracer_task(intptr_t exinf);
 	extern void ev3_cyc_tracer(intptr_t exinf);
+
+	extern void bluetooth_start_task(intptr_t exinf);
+	extern void ev3_cyc_bluetooth_start(intptr_t exinf);
 	
 #endif /* TOPPERS_MACRO_ONLY */
 	

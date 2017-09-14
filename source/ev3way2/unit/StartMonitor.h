@@ -1,20 +1,25 @@
 #ifndef UNIT_START_MONITOR_H
 #define UNIT_START_MONITOR_H
 
-#include "TouchSensorMonitor.h"
+#include "TouchSensorDriver.h"
 
 namespace unit
 {
 	class StartMonitor
 	{
 	private:
-		TouchSensorMonitor* mTouchSensorMonitor;
+		TouchSensorDriver* mTouchSensorDriver;
+		bool mIsStartSignalReceived;
+		bool mIsBluetoothStartSignalReceived;
 
 	public:
-		StartMonitor(TouchSensorMonitor* touchSensorMonitor);
+		StartMonitor(TouchSensorDriver* touchSensorDriver);
 		~StartMonitor();
 		
 		bool execute();
+		bool isStartSignalReceived();
+		bool isBluetoothStartSignalReceived();
+		void updateBluetoothStartSignalStatus();
 	};
 }  // namespace unit
 #endif
