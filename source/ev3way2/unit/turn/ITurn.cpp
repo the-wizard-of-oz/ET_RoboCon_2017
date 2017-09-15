@@ -3,7 +3,7 @@
 namespace unit
 {
 	ITurn::ITurn()
-	: mTurn(0)
+	: mTurn(0.f)
 	{
 	}
 	
@@ -11,7 +11,7 @@ namespace unit
 	{
 	}
 	
-	int ITurn::getTurn(bool needUpdate)
+	float ITurn::getTurn(bool needUpdate)
 	{
 		if(needUpdate)
 		{

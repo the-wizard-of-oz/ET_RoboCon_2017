@@ -1,7 +1,6 @@
 #include <math.h>
 #include "Compass.h"
 #include "../hardware_size.h"
-#include "globalResourse.h"
 
 namespace unit
 {
@@ -28,14 +27,6 @@ namespace unit
 		mDirection += WHEEL_DIAMETER_MM * (rightRotationMovement - leftRotationMovement) / WHEEL_DISTANCE_MM;
 		mPreviousRightEncoderCount = rightEncoderCount;
 		mPreviousLeftEncoderCount  = leftEncoderCount;
-		
-		{
-			char buf[64] = {0};
-			sprintf(buf, "rDif:%4d(rEnc%4d), lDif%4d(lEnc%4d), dir:%4f\r\n",
-					rightRotationMovement, rightEncoderCount,
-					leftRotationMovement,  leftEncoderCount,  mDirection);
-			gBluetoothLogger->log(buf, strlen(buf));
-		}
 	}
 
 	float Compass::getDirection()

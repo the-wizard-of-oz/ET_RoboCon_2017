@@ -10,10 +10,10 @@ namespace unit
 	}
 	
 	GrayTraceTurn::GrayTraceTurn(ColorSensorDriver* colorSensorDriver,
-								 int brightness,
+								 int  brightness,
 								 bool isLeftEdgeTraceEnable,
-								 int rightTurnLimit,
-								 int leftTurnLimit,
+								 int  rightTurnLimit,
+								 int  leftTurnLimit,
 								 struct ColorReference* colorReference)
 	: BrightTraceTurn(colorSensorDriver,
 					  brightness,
@@ -30,9 +30,9 @@ namespace unit
 		mColorReference = nullptr;
 	}
 	
-	int GrayTraceTurn::calculateTurn()
+	float GrayTraceTurn::calculateTurn()
 	{
-		int turn = 0;
+		float turn = 0.f;
 		
 		if(!mIsTargetBrightnessUpdated)
 		{
@@ -41,9 +41,9 @@ namespace unit
 		}
 		if(mColorSensorDriver != nullptr)
 		{
-			int brightness = mColorSensorDriver->GetBrightness();
-			int sign = (mIsLeftEdgeTraceEnable) ? -1 : 1;
-			int denominator = (mColorReference->mWhite - mColorReference->mBlack) / 2;
+			int   brightness = mColorSensorDriver->GetBrightness();
+			float sign = (mIsLeftEdgeTraceEnable) ? -1.f : 1.f;
+			int   denominator = (mColorReference->mWhite - mColorReference->mBlack) / 2;
 			if(denominator != 0)
 			{
 				turn = sign * TURN_RANGE * (brightness - mTargetBrightness) / denominator;

@@ -3,7 +3,7 @@
 namespace unit
 {
 	IForward::IForward()
-	: mForward(0)
+	: mForward(0.f)
 	{
 	}
 	
@@ -11,7 +11,7 @@ namespace unit
 	{
 	}
 	
-	int IForward::getForward(bool needUpdate)
+	float IForward::getForward(bool needUpdate)
 	{
 		if(needUpdate)
 		{
