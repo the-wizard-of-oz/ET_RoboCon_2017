@@ -17,9 +17,11 @@
 #include "MotorController.h"
 
 #include "DistanceMeter.h"
+#include "Compass.h"
 #include "Measurement.h"
 
 #include "DistanceJudge.h"
+#include "CompassJudge.h"
 
 #include "ColorReference.h"
 #include "TailAngle.h"
@@ -53,7 +55,7 @@
 #include "EV3Way.h"
 
 //	------------------------------------------------------------
-static unit::BluetoothLogger* gBluetoothLogger = nullptr;
+unit::BluetoothLogger* gBluetoothLogger = nullptr;
 
 unit::MotorDriver* gTailMotorDriver  = nullptr;
 unit::MotorDriver* gRightMotorDriver = nullptr;
@@ -70,6 +72,7 @@ unit::TouchSensorMonitor*  gTouchSensorMonitor  = nullptr;
 unit::MotorController*     gMotorController     = nullptr;
 
 unit::DistanceMeter* gDistanceMeter = nullptr;
+unit::Compass*       gCompass       = nullptr;
 unit::Measurement*   gMeasurement   = nullptr;
 
 unit::EndMonitor*    gEndMonitor    = nullptr;
@@ -109,9 +112,11 @@ static void user_system_create()
 	gMotorController     = new unit::MotorController(gRightMotorDriver, gLeftMotorDriver);
 
 	gDistanceMeter = new unit::DistanceMeter();
+	gCompass       = new unit::Compass();
 	gMeasurement   = new unit::Measurement(gMotorController);
 	{
 		gMeasurement->addAnalogMeter(gDistanceMeter);
+		gMeasurement->addAnalogMeter(gCompass);
 	}
 
 	gPostureController = new unit::PostureController(gTailController, &gTailAngle);
@@ -156,6 +161,7 @@ static void user_system_create()
 			unit::EndMonitor* endMonitor = new unit::EndMonitor();
 			{
 				endMonitor->addEndJudge(new unit::DistanceJudge(unit::eBetweenLowerAndUpper, 10200.f, 10250.f, gDistanceMeter));
+				endMonitor->addEndJudge(new unit::CompassJudge( unit::eBetweenLowerAndUpper, -30.f, 0.f, gCompass));
 			}
 			unit::GrayTraceTurn* grayTraceTurn = new unit::GrayTraceTurn(gColorSensorDriver, &gColorReference);
 			unit::BalancingTravel* balancingTravel = new unit::BalancingTravel(gMotorController,
@@ -192,6 +198,7 @@ static void user_system_destroy()
 	delete gMotorController;
 
 	delete gDistanceMeter;
+	delete gCompass;
 	delete gMeasurement;
 
 	delete gPostureController;
