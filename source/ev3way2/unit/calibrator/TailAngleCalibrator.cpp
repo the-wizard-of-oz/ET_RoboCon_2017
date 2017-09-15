@@ -5,7 +5,8 @@
 
 namespace unit
 {
-	static const int CALIBRATION_RANGE = 10;
+	static const int CALIBRATION_START_OFFSET = -5;
+	static const int CALIBRATION_RANGE = 20;
 	static const int FALL_DETECT_ANGLE = 30;
 	
 	TailAngleCalibrator::TailAngleCalibrator(TouchSensorMonitor* touchSensorMonitor, LCD* lcd,
@@ -33,9 +34,9 @@ namespace unit
 		waitForInput();
 		mGyroDriver->Reset();
 		int angleForResting = mTailAngle->GetAngle(ePostureForRestingInSpeedCourse);
-		int startAngle = angleForResting - CALIBRATION_RANGE / 2;
-		int endAngle   = angleForResting + CALIBRATION_RANGE / 2;
-		for(int angle = startAngle; angle < endAngle; ++angle)
+		int startAngle = angleForResting + CALIBRATION_START_OFFSET;
+		int endAngle   = startAngle + CALIBRATION_RANGE;
+		for(int angle  = startAngle; angle < endAngle; ++angle)
 		{
 			int gyroAngle = mGyroDriver->GetAngle();
 			mTailController->execute(angle,

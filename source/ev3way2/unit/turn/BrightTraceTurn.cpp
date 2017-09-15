@@ -3,8 +3,8 @@
 namespace unit
 {
 	static const int   BRIGHTNESS_DEFAULT = 30;
-	static const int   RIGHT_TURN_LIMIT = 20;
-	static const int   LEFT_TURN_LIMIT = -20;
+	static const float RIGHT_TURN_LIMIT = 20.f;
+	static const float LEFT_TURN_LIMIT = -20.f;
 	static const float P_GAIN = 2.5;
 	
 	BrightTraceTurn::BrightTraceTurn()
@@ -27,7 +27,11 @@ namespace unit
 	{
 	}
 	
-	BrightTraceTurn::BrightTraceTurn(ColorSensorDriver* colorSensorDriver, int brightness, bool isLeftEdgeTraceEnable, int rightTurnLimit, int LeftTurnLimit)
+	BrightTraceTurn::BrightTraceTurn(ColorSensorDriver* colorSensorDriver,
+									 int brightness,
+									 bool isLeftEdgeTraceEnable,
+									 float rightTurnLimit,
+									 float LeftTurnLimit)
 	: ITurn(),
 	  mColorSensorDriver(colorSensorDriver),
 	  mTargetBrightness(brightness),
@@ -42,14 +46,14 @@ namespace unit
 		mColorSensorDriver = nullptr;
 	}
 	
-	int BrightTraceTurn::calculateTurn()
+	float BrightTraceTurn::calculateTurn()
 	{
-		int turn = 0;
+		float turn = 0.f;
 
 		if(mColorSensorDriver != nullptr)
 		{
-			int brightness = mColorSensorDriver->GetBrightness();
-			int sign = (mIsLeftEdgeTraceEnable) ? -1 : 1;
+			int   brightness = mColorSensorDriver->GetBrightness();
+			float sign = (mIsLeftEdgeTraceEnable) ? -1.f : 1.f;
 			turn = sign * P_GAIN * (brightness - mTargetBrightness);
 			clip(turn);
 		}
@@ -57,7 +61,7 @@ namespace unit
 		return turn;
 	}
 	
-	void BrightTraceTurn::clip(int& turn)
+	void BrightTraceTurn::clip(float& turn)
 	{
 		if(turn > mRightTurnLimit)
 		{

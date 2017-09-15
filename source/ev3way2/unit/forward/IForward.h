@@ -7,18 +7,18 @@ namespace unit
 	{
 	//
 	private:
-		int mForward;
+		float mForward;
 	
 	//
 	public:
 		IForward();
 		virtual ~IForward();
 
-		int  getForward(bool needUpdate = false);
-		void updateForward();
+		float getForward(bool needUpdate);
+		void  updateForward();
 
 	private:
-		virtual int calculateForward() = 0;
+		virtual float calculateForward() = 0;
 	};
 }  // namespace unit
 #endif

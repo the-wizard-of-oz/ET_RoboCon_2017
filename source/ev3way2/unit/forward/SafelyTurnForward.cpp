@@ -9,10 +9,10 @@ namespace unit
 	}
 	
 	SafelyTurnForward::SafelyTurnForward(ITurn* iTurn,
-										 int targetForward,
-										 int limitedForward,
-										 int rightTurnLimit,
-										 int leftTurnLimit)
+										 float targetForward,
+										 float limitedForward,
+										 float rightTurnLimit,
+										 float leftTurnLimit)
 	: IForward(), mITurn(iTurn), mTargetForward(targetForward), mLimitedForward(limitedForward),
 	  mRightTurnLimit(rightTurnLimit), mLeftTurnLimit(leftTurnLimit)
 	{
@@ -23,15 +23,15 @@ namespace unit
 		mITurn = nullptr;
 	}
 	
-	int SafelyTurnForward::calculateForward()
+	float SafelyTurnForward::calculateForward()
 	{
-		int forward = 0;
+		float forward = 0;
 		
 		if(mITurn != nullptr)
 		{
 			forward = mTargetForward;
 			bool needUpdate = false;
-			int turn = mITurn->getTurn(needUpdate);
+			float turn = mITurn->getTurn(needUpdate);
 			if(turn < mLeftTurnLimit)  forward = mLimitedForward;
 			if(turn > mRightTurnLimit) forward = mLimitedForward;
 		}

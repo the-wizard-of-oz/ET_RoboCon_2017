@@ -6,9 +6,9 @@
 
 namespace unit
 {
-	static const int RIGHT_TURN_LIMIT_DEFAULT =  10;
-	static const int LEFT_TURN_LIMIT_DEFAULT  = -10;
-	static const int LIMITED_FORWARD_DEFAULT  =  15;
+	static const float RIGHT_TURN_LIMIT_DEFAULT =  10.f;
+	static const float LEFT_TURN_LIMIT_DEFAULT  = -10.f;
+	static const float LIMITED_FORWARD_DEFAULT  =  15.f;
 	
 	class SafelyTurnForward
 	: public IForward
@@ -16,22 +16,22 @@ namespace unit
 	//
 	private:
 		ITurn* mITurn;
-		int mTargetForward;
-		int mLimitedForward;
-		int mRightTurnLimit;
-		int mLeftTurnLimit;
+		float mTargetForward;
+		float mLimitedForward;
+		float mRightTurnLimit;
+		float mLeftTurnLimit;
 	
 	//
 	public:
 		SafelyTurnForward();
 		SafelyTurnForward(ITurn* iTurn,
-						  int targetForward  = LIMITED_FORWARD_DEFAULT,
-						  int limitedForward = LIMITED_FORWARD_DEFAULT,
-						  int rightTurnLimit = RIGHT_TURN_LIMIT_DEFAULT,
-						  int leftTurnLimit  = LEFT_TURN_LIMIT_DEFAULT);
+						  float targetForward  = LIMITED_FORWARD_DEFAULT,
+						  float limitedForward = LIMITED_FORWARD_DEFAULT,
+						  float rightTurnLimit = RIGHT_TURN_LIMIT_DEFAULT,
+						  float leftTurnLimit  = LEFT_TURN_LIMIT_DEFAULT);
 		virtual ~SafelyTurnForward();
 
-		virtual int calculateForward();
+		virtual float calculateForward();
 	};
 }  // namespace unit
 #endif

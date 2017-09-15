@@ -7,16 +7,16 @@ namespace unit
 	{
 	//
 	private:
-		int mTurn;
+		float mTurn;
 	
 	//
 	public:
 		ITurn();
 		virtual ~ITurn();
 
-		int  getTurn(bool needUpdate = false);
-		void updateTurn();
-		virtual int calculateTurn() = 0;
+		float getTurn(bool needUpdate);
+		void  updateTurn();
+		virtual float calculateTurn() = 0;
 	};
 }  // namespace unit
 #endif

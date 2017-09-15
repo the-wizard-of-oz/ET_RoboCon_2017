@@ -25,8 +25,8 @@ namespace unit
 	bool BalancingTravel::execute()
 	{
 		bool  needUpdate = true;
-		float turn    = (float)mITurn->getTurn(needUpdate);
-		float forward = (float)mIForward->getForward(needUpdate);
+		float turn    = mITurn->getTurn(needUpdate);
+		float forward = mIForward->getForward(needUpdate);
 		float gyroAnglerVelocity = (float)mGyroDriver->GetAnglerVelocity();
 		float gyroOffset         = (float)mGyroDriver->getOffset();
 		float leftEncoderCount   = 0.f;

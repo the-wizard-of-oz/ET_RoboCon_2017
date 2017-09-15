@@ -25,7 +25,7 @@ namespace unit
 					  struct ColorReference* colorReference);
 		virtual ~GrayTraceTurn();
 
-		virtual int calculateTurn();
+		virtual float calculateTurn();
 	};
 }  // namespace unit
 #endif

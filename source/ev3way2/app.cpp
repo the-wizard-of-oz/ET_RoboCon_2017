@@ -22,6 +22,8 @@
 
 #include "DistanceJudge.h"
 #include "CompassJudge.h"
+#include "EndJudge.h"
+#include "NeverEndJudge.h"
 
 #include "ColorReference.h"
 #include "TailAngle.h"
@@ -41,7 +43,9 @@
 #include "ColorReferenceCalibrator.h"
 
 #include "GrayTraceTurn.h"
+#include "PIDGrayTraceTurn.h"
 
+#include "ConstantForward.h"
 #include "SafelyTurnForward.h"
 
 #include "StartDashTravel.h"
@@ -142,17 +146,20 @@ static void user_system_create()
 				endMonitor->addEndJudge(new unit::EndJudge());
 			}
 			unit::GrayTraceTurn* grayTraceTurn = new unit::GrayTraceTurn(gColorSensorDriver, &gColorReference);
-			unit::StartDashTravel* startDashTravel = new unit::StartDashTravel(gMotorController,
-																			   gGyroDriver,
-																			   gBatteryDriver,
-																			   grayTraceTurn,
-																			   new unit::SafelyTurnForward(grayTraceTurn, 50),
-																			   gBalancingController,
-																			   &gTailAngle,
-																			   gTailController,
-																			   unit::ePostureForRunningInSpeedCourse,
-																			   unit::tailControl::eHighSpeed,
-																			   unit::tailControl::eLessThanTargetAngle);
+			//unit::PIDGrayTraceTurn* pidGrayTraceTurn = new unit::PIDGrayTraceTurn(gColorSensorDriver, &gColorReference, 0.4f, 0.f, 0.f);
+			unit::StartDashTravel*  startDashTravel  = new unit::StartDashTravel(gMotorController,
+																				 gGyroDriver,
+																				 gBatteryDriver,
+																				 grayTraceTurn,
+																				 //pidGrayTraceTurn,
+																				 new unit::SafelyTurnForward(grayTraceTurn, 50.f),
+																				 //new unit::ConstantForward(100.f),
+																				 gBalancingController,
+																				 &gTailAngle,
+																				 gTailController,
+																				 unit::ePostureForRunningInSpeedCourse,
+																				 unit::tailControl::eHighSpeed,
+																				 unit::tailControl::eLessThanTargetAngle);
 			gSpeedCoursePlayer->addSequence(new unit::TravelSequence(endMonitor, startDashTravel, gMeasurement));
 		}
 		
@@ -163,12 +170,12 @@ static void user_system_create()
 				endMonitor->addEndJudge(new unit::DistanceJudge(unit::eBetweenLowerAndUpper, 10200.f, 10250.f, gDistanceMeter));
 				endMonitor->addEndJudge(new unit::CompassJudge( unit::eBetweenLowerAndUpper, -30.f, 0.f, gCompass));
 			}
-			unit::GrayTraceTurn* grayTraceTurn = new unit::GrayTraceTurn(gColorSensorDriver, &gColorReference);
+			unit::GrayTraceTurn*   grayTraceTurn   = new unit::GrayTraceTurn(gColorSensorDriver, &gColorReference);
 			unit::BalancingTravel* balancingTravel = new unit::BalancingTravel(gMotorController,
 																			   gGyroDriver,
 																			   gBatteryDriver,
 																			   grayTraceTurn,
-																			   new unit::SafelyTurnForward(grayTraceTurn, 50),
+																			   new unit::SafelyTurnForward(grayTraceTurn, 50.f),
 																			   gBalancingController);
 			gSpeedCoursePlayer->addSequence(new unit::TravelSequence(endMonitor, balancingTravel, gMeasurement));
 		}
@@ -223,8 +230,14 @@ void ev3_cyc_tracer(intptr_t exinf)
 //	------------------------------------------------------------
 void tracer_task(intptr_t exinf)
 {
-	gEV3Way->execute();
-//	ext_tsk();
+	if (ev3_button_is_pressed(BACK_BUTTON))
+	{
+		wup_tsk(MAIN_TASK);
+	}
+	else
+	{
+		gEV3Way->execute();
+	}
 }
 
 //	------------------------------------------------------------
@@ -236,14 +249,20 @@ void ev3_cyc_bluetooth_start(intptr_t exinf)
 //	------------------------------------------------------------
 void bluetooth_start_task(intptr_t unused)
 {
-	if(!gStartMonitor->isStartSignalReceived())
+	if (ev3_button_is_pressed(BACK_BUTTON))
 	{
-		if(!gStartMonitor->isBluetoothStartSignalReceived())
+		wup_tsk(MAIN_TASK);
+	}
+	else
+	{
+		if(!gStartMonitor->isStartSignalReceived())
 		{
-			gStartMonitor->updateBluetoothStartSignalStatus();
+			if(!gStartMonitor->isBluetoothStartSignalReceived())
+			{
+				gStartMonitor->updateBluetoothStartSignalStatus();
+			}
 		}
 	}
-//	ext_tsk();
 }
 
 //	------------------------------------------------------------

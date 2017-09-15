@@ -16,20 +16,21 @@ namespace unit
 		bool mIsLeftEdgeTraceEnable;
 		
 	private:
-		int  mRightTurnLimit;
-		int  mLeftTurnLimit;
+		float mRightTurnLimit;
+		float mLeftTurnLimit;
 	
 	//
 	public:
 		BrightTraceTurn();
 		BrightTraceTurn(ColorSensorDriver* colorSensorDriver);
-		BrightTraceTurn(ColorSensorDriver* colorSensorDriver, int brightness, bool isLeftEdgeTraceEnable, int rightTurnLimit, int LeftTurnLimit);
+		BrightTraceTurn(ColorSensorDriver* colorSensorDriver, int brightness, bool isLeftEdgeTraceEnable,
+						float rightTurnLimit, float LeftTurnLimit);
 		virtual ~BrightTraceTurn();
 
-		virtual int calculateTurn();
+		virtual float calculateTurn();
 		
 	protected:
-		void clip(int& turn);
+		void clip(float& turn);
 	};
 }  // namespace unit
 #endif

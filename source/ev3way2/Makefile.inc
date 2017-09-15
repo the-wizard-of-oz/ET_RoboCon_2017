@@ -6,10 +6,10 @@ APPL_CXXOBJS += BluetoothLogger.o \
 				MotorDriver.o GyroDriver.o ColorSensorDriver.o TouchSensorDriver.o Battery.o BatteryDriver.o LCD.o \
 				BalancingController.o TailController.o TouchSensorMonitor.o MotorController.o \
 				IAnalogMeter.o DistanceMeter.o Compass.o Measurement.o \
-				EndJudge.o BrightnessJudge.o DistanceJudge.o CompassJudge.o EndMonitor.o \
+				EndJudge.o NeverEndJudge.o BrightnessJudge.o DistanceJudge.o CompassJudge.o EndMonitor.o \
 				TailAngle.o PostureController.o \
-				ITurn.o BrightTraceTurn.o GrayTraceTurn.o \
-				IForward.o SafelyTurnForward.o \
+				ITurn.o BrightTraceTurn.o GrayTraceTurn.o PIDGrayTraceTurn.o \
+				IForward.o SafelyTurnForward.o ConstantForward.o \
 				ITravel.o BalancingTravel.o StartDashTravel.o \
 				StartMonitor.o \
 				ISequence.o StartMonitorSequence.o PostureControlSequence.o TravelPreparationSequence.o TravelSequence.o \
