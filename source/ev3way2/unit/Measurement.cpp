@@ -25,6 +25,7 @@ namespace unit
 			if(!mIsEnable)
 			{
 				(*it)->initPrevEncoderCount(rightEncoderCount, leftEncoderCount);
+				mIsEnable = true;
 			}
 			(*it)->update(rightEncoderCount, leftEncoderCount);
 		}
